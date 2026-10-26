@@ -1,10 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{# Главная страница со списками рассылок и расширенными блоками аналитики ТЗ Часть 8 #}
+{% extends 'main/base.html' %}
+
+{% block title %}Список рассылок{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-md-4 mb-3">
+        <div class="card bg-primary text-white shadow-sm h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-uppercase font-monospace fs-6">Всего рассылок</h5>
+                <p class="card-text display-6 fw-bold mb-0">{{ total_mailings }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card bg-success text-white shadow-sm h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-uppercase font-monospace fs-6">Активные рассылки</h5>
+                <p class="card-text display-6 fw-bold mb-0">{{ active_mailings }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card bg-info text-white shadow-sm h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-uppercase font-monospace fs-6">Уникальные получатели</h5>
+                <p class="card-text display-6 fw-bold mb-0">{{ total_unique_clients }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Часть 8 ТЗ: Отчеты по успешным/неуспешным попыткам -->
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="card border-success shadow-sm h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-uppercase font-monospace text-success fs-6">Успешные попытки</h5>
+                <p class="card-text display-6 fw-bold text-success mb-0">{{ success_logs_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card border-danger shadow-sm h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-uppercase font-monospace text-danger fs-6">Неуспешные попытки</h5>
+                <p class="card-text display-6 fw-bold text-danger mb-0">{{ failed_logs_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card border-secondary shadow-sm h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-uppercase font-monospace text-secondary fs-6">Всего отправлено писем</h5>
+                <p class="card-text display-6 fw-bold text-secondary mb-0">{{ total_sent_messages }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Ваши рассылки</h2>
+    <a href="{% url 'main:mailing_create' %}" class="btn btn-primary">Создать рассылку</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Время начала</th>
+                    <th>Время окончания</th>
+                    <th>Сообщение</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mailing in object_list %}
+                <tr>
+                    <td>{{ mailing.id }}</td>
+                    <td>{{ mailing.start_time|date:"d.m.Y H:i" }}</td>
+                    <td>{{ mailing.end_time|date:"d.m.Y H:i" }}</td>
+                    <td>{{ mailing.message.title }}</td>
+                    <td>
+                        <span class="badge {% if mailing.status == 'Создана' %}bg-secondary{% elif mailing.status == 'Запущена' %}bg-success{% else %}bg-danger{% endif %}">
+                            {{ mailing.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'main:mailing_detail' mailing.pk %}" class="btn btn-sm btn-info text-white">Просмотр</a>
+                        <a href="{% url 'main:mailing_update' mailing.pk %}" class="btn btn-sm btn-warning text-white">Редактировать</a>
+                        <a href="{% url 'main:mailing_delete' mailing.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-3">Рассылок пока не создано.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

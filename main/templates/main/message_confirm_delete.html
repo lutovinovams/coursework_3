@@ -1,0 +1,20 @@
+{# Шаблон подтверждения удаления сообщения. #}
+{% extends 'main/base.html' %}
+
+{% block title %}Удаление сообщения{% endblock %}
+
+{% block content %}
+<div class="card border-danger shadow-sm mx-auto" style="max-width: 500px;">
+    <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">Подтверждение удаления</h5>
+    </div>
+    <div class="card-body">
+        <p>Вы уверены, что хотите полностью удалить сообщение <strong>{{ object.title }}</strong>?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Удалить</button>
+            <a href="{% url 'main:message_list' %}" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

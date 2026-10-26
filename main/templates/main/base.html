@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Сервис рассылок{% endblock %}</title>
+    <!-- Подключение локального файла Bootstrap вместо сетевого -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'main:mailing_list' %}">Сервис рассылок</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link text-white" href="{% url 'main:mailing_list' %}">Рассылки</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{% url 'main:client_list' %}">Клиенты</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{% url 'main:message_list' %}">Сообщения</a></li>
+                    {% if request.user.groups.all.0.name == 'Manager' %}
+                        <li class="nav-item"><a class="nav-link text-warning fw-bold" href="{% url 'users:user_list' %}">Пользователи</a></li>
+                    {% endif %}
+                </ul>
+                {% if user.is_authenticated %}
+                <div class="d-flex align-items-center">
+                    <span class="navbar-text text-white me-3">Вы вошли как: <strong>{{ user.email }}</strong></span>
+                    <form method="post" action="{% url 'users:logout' %}" class="m-0">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-light">Выйти</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

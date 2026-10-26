@@ -1,0 +1,32 @@
+{# Шаблон для отображения списка всех шаблонов сообщений. #}
+{% extends 'main/base.html' %}
+
+{% block title %}Список сообщений{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Шаблоны сообщений</h2>
+    <a href="{% url 'main:message_create' %}" class="btn btn-primary">Создать сообщение</a>
+</div>
+<div class="row">
+    {% for message in object_list %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title text-truncate">{{ message.title }}</h5>
+                <p class="card-text text-muted text-truncate">{{ message.body }}</p>
+            </div>
+            <div class="card-footer bg-transparent border-0 d-flex justify-content-between">
+                <a href="{% url 'main:message_detail' message.pk %}" class="btn btn-sm btn-outline-info">Открыть</a>
+                <div>
+                    <a href="{% url 'main:message_update' message.pk %}" class="btn btn-sm btn-outline-warning">Редактировать</a>
+                    <a href="{% url 'main:message_delete' message.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center text-muted">Список сообщений пока пуст.</div>
+    {% endfor %}
+</div>
+{% endblock %}

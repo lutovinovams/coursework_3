@@ -1,10 +1,17 @@
+{# Страница об успешном подтверждении почты #}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Почта подтверждена</title>
+    <link href="https://jsdelivr.net" rel="stylesheet">
 </head>
-<body>
-$END$
+<body class="bg-light d-flex align-items-center" style="height: 100vh;">
+    <div class="card shadow mx-auto text-center p-4" style="width: 400px;">
+        <div class="text-success display-4 mb-3">✓</div>
+        <h4>Аккаунт активирован!</h4>
+        <p class="text-muted">Ваш Email успешно подтвержден. Теперь вы можете войти в систему.</p>
+        <a href="{% url 'users:login' %}" class="btn btn-success w-100 mt-3">Перейти ко входу</a>
+    </div>
 </body>
 </html>

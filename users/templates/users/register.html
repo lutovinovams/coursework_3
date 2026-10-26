@@ -1,10 +1,22 @@
+{# Страница регистрации #}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link href="https://jsdelivr.net" rel="stylesheet">
 </head>
-<body>
-$END$
+<body class="bg-light d-flex align-items-center" style="height: 100vh;">
+    <div class="card shadow mx-auto" style="width: 450px;">
+        <div class="card-header bg-primary text-white text-center"><h4>Регистрация аккаунта</h4></div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary w-100 mt-2">Зарегистрироваться</button>
+            </form>
+            <div class="text-center mt-3"><a href="{% url 'users:login' %}" class="small">Уже есть аккаунт? Войти</a></div>
+        </div>
+    </div>
 </body>
 </html>
